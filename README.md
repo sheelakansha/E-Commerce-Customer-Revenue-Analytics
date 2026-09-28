@@ -42,10 +42,15 @@ CTEs, multi-table joins, `GROUP BY`, `CASE`, window functions, `LAG`, `ROW_NUMBE
 cd data
 python generate_data.py
 cd ..
-createdb ecommerce_analytics
-psql -d ecommerce_analytics -f schema.sql
-psql -d ecommerce_analytics -f load_data.sql
-psql -d ecommerce_analytics -f queries/01_monthly_revenue_growth.sql
+
+# Note: If PostgreSQL is on a non-standard port (e.g., 1234), set PGPORT and PGUSER:
+# PowerShell:
+# $env:PGPORT="1234"; $env:PGUSER="postgres"
+
+createdb -p 1234 -U postgres ecommerce_analytics
+psql -p 1234 -U postgres -d ecommerce_analytics -f schema.sql
+psql -p 1234 -U postgres -d ecommerce_analytics -f load_data.sql
+psql -p 1234 -U postgres -d ecommerce_analytics -f queries/01_monthly_revenue_growth.sql
 ```
 
 ## Repository Structure
