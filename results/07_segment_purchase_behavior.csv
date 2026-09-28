@@ -1,0 +1,4 @@
+customer_segment,customers,orders,revenue,avg_order_value,revenue_per_customer,orders_per_customer
+Retail,6918,30347,126210495.87,4158.91,18243.78,4.39
+Premium,2197,14454,52889683.1,3659.17,24073.59,6.58
+Corporate,777,6865,20174772.78,2938.79,25964.96,8.84

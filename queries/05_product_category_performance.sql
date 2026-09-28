@@ -1,4 +1,4 @@
--- Q5: Which products and categories drive revenue?
+-- Business Question: Which product categories and specific items drive the highest gross revenue and sales volume?
 WITH product_sales AS (
     SELECT p.product_id,p.product_name,p.category,SUM(oi.quantity) AS units_sold,
            COUNT(DISTINCT o.order_id) AS orders,

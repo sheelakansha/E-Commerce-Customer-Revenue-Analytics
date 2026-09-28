@@ -1,4 +1,4 @@
--- Q7: How does purchasing behavior differ by customer segment?
+-- Business Question: How do purchasing behavior, order volume, and revenue contribution vary across customer segments?
 WITH order_value AS (
     SELECT o.order_id,o.customer_id,
            SUM(oi.quantity*oi.unit_price)-MAX(o.discount_amount) AS net_order_value

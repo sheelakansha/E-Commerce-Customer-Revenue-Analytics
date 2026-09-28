@@ -1,4 +1,4 @@
--- Q2: What percentage of each signup cohort keeps purchasing?
+-- Business Question: What percentage of customer cohorts are retained over successive months following their initial purchase?
 WITH first_purchase AS (
     SELECT customer_id, DATE_TRUNC('month',MIN(order_date))::date AS cohort_month
     FROM orders WHERE order_status='Completed' GROUP BY customer_id

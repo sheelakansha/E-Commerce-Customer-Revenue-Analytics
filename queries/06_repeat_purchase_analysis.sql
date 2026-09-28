@@ -1,4 +1,4 @@
--- Q6: How quickly do customers make a second purchase?
+-- Business Question: What is the overall repeat purchase rate, and how many days on average does it take for a customer to make a second purchase?
 WITH purchases AS (
     SELECT customer_id,order_id,order_date,
            ROW_NUMBER() OVER(PARTITION BY customer_id ORDER BY order_date,order_id) AS purchase_number

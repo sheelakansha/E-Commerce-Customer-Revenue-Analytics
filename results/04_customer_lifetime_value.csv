@@ -1,0 +1,4 @@
+customer_segment,customers,avg_lifetime_value,avg_orders,avg_order_value,avg_active_days,segment_revenue
+Retail,6912,26649.89,4.32,6161.09,129.8,184204030.57
+Premium,2197,57879.12,6.47,8901.15,156.2,127160429.84
+Corporate,777,113956.88,8.71,13070.73,179.7,88544496.5

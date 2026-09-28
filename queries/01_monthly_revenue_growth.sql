@@ -1,4 +1,4 @@
--- Q1: Is revenue growing month over month?
+-- Business Question: How is monthly revenue growing over time, and what is the month-over-month (MoM) growth rate?
 WITH monthly AS (
     SELECT DATE_TRUNC('month', o.order_date)::date AS month,
            SUM(p.payment_amount) AS revenue,

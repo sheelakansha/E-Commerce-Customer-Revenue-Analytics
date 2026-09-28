@@ -1,4 +1,4 @@
--- Q8: Are discounted orders associated with different purchasing behavior?
+-- Business Question: How do discounted orders compare to non-discounted orders in terms of average order value and discount rate across segments?
 WITH order_metrics AS (
     SELECT o.order_id,c.customer_segment,o.discount_amount,
            SUM(oi.quantity*oi.unit_price) AS gross_value,

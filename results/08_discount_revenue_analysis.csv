@@ -1,0 +1,4 @@
+order_type,customer_segment,orders,avg_gross_order_value,avg_discount,avg_net_order_value,discount_rate_pct
+Discounted,Corporate,6865,5310.36,2371.57,2938.79,44.66
+Discounted,Premium,14454,5295.46,1636.29,3659.17,30.9
+Discounted,Retail,30347,5270.44,1111.53,4158.91,21.09

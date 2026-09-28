@@ -1,4 +1,4 @@
--- Q3: Which customers are champions, at-risk, or lapsed?
+-- Business Question: How can customers be segmented by Recency, Frequency, and Monetary (RFM) value to identify Champions, At-Risk, and Lapsed customers?
 WITH customer_rfm AS (
     SELECT c.customer_id, c.customer_segment, MAX(o.order_date) AS last_order_date,
            COUNT(DISTINCT o.order_id) AS frequency, SUM(p.payment_amount) AS monetary

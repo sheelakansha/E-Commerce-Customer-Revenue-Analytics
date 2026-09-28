@@ -1,2 +1,5 @@
 numpy>=2.0
 pandas>=2.0
+matplotlib>=3.5
+seaborn>=0.12
+psycopg2-binary>=2.9

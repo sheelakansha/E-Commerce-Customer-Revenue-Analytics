@@ -1,4 +1,4 @@
--- Q4: Which customer segments generate the greatest value?
+-- Business Question: What is the average Customer Lifetime Value (CLV), order frequency, and active lifespan across different customer segments?
 WITH customer_value AS (
     SELECT c.customer_id,c.customer_segment,MIN(o.order_date) AS first_order_date,
            MAX(o.order_date) AS last_order_date,COUNT(DISTINCT o.order_id) AS order_count,
