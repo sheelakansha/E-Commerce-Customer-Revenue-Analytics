@@ -1,4 +1,10 @@
-DROP TABLE IF EXISTS payments, order_items, orders, products, customers CASCADE;
+SET FOREIGN_KEY_CHECKS = 0;
+DROP TABLE IF EXISTS payments;
+DROP TABLE IF EXISTS order_items;
+DROP TABLE IF EXISTS orders;
+DROP TABLE IF EXISTS products;
+DROP TABLE IF EXISTS customers;
+SET FOREIGN_KEY_CHECKS = 1;
 
 CREATE TABLE customers (
     customer_id BIGINT PRIMARY KEY,
@@ -13,32 +19,36 @@ CREATE TABLE products (
     product_name VARCHAR(150) NOT NULL,
     category VARCHAR(80) NOT NULL,
     subcategory VARCHAR(80) NOT NULL,
-    unit_price NUMERIC(12,2) NOT NULL CHECK (unit_price > 0)
+    unit_price DECIMAL(12,2) NOT NULL CHECK (unit_price > 0)
 );
 
 CREATE TABLE orders (
     order_id BIGINT PRIMARY KEY,
-    customer_id BIGINT NOT NULL REFERENCES customers(customer_id),
+    customer_id BIGINT NOT NULL,
     order_date DATE NOT NULL,
     order_status VARCHAR(20) NOT NULL CHECK (order_status IN ('Completed','Cancelled','Returned')),
     payment_method VARCHAR(30) NOT NULL,
-    discount_amount NUMERIC(12,2) NOT NULL DEFAULT 0 CHECK (discount_amount >= 0)
+    discount_amount DECIMAL(12,2) NOT NULL DEFAULT 0 CHECK (discount_amount >= 0),
+    FOREIGN KEY (customer_id) REFERENCES customers(customer_id)
 );
 
 CREATE TABLE order_items (
     order_item_id BIGINT PRIMARY KEY,
-    order_id BIGINT NOT NULL REFERENCES orders(order_id),
-    product_id BIGINT NOT NULL REFERENCES products(product_id),
+    order_id BIGINT NOT NULL,
+    product_id BIGINT NOT NULL,
     quantity INT NOT NULL CHECK (quantity > 0),
-    unit_price NUMERIC(12,2) NOT NULL CHECK (unit_price > 0)
+    unit_price DECIMAL(12,2) NOT NULL CHECK (unit_price > 0),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id),
+    FOREIGN KEY (product_id) REFERENCES products(product_id)
 );
 
 CREATE TABLE payments (
     payment_id BIGINT PRIMARY KEY,
-    order_id BIGINT NOT NULL REFERENCES orders(order_id),
+    order_id BIGINT NOT NULL,
     payment_date DATE NOT NULL,
-    payment_amount NUMERIC(12,2) NOT NULL CHECK (payment_amount >= 0),
-    payment_status VARCHAR(20) NOT NULL CHECK (payment_status IN ('Paid','Refunded','Failed'))
+    payment_amount DECIMAL(12,2) NOT NULL CHECK (payment_amount >= 0),
+    payment_status VARCHAR(20) NOT NULL CHECK (payment_status IN ('Paid','Refunded','Failed')),
+    FOREIGN KEY (order_id) REFERENCES orders(order_id)
 );
 
 CREATE INDEX idx_orders_customer_date ON orders(customer_id, order_date);

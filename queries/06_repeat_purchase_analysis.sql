@@ -6,14 +6,13 @@ WITH purchases AS (
 ),
 first_second AS (
     SELECT customer_id,
-           MIN(order_date) FILTER(WHERE purchase_number=1) AS first_purchase_date,
-           MIN(order_date) FILTER(WHERE purchase_number=2) AS second_purchase_date
+           MIN(CASE WHEN purchase_number=1 THEN order_date END) AS first_purchase_date,
+           MIN(CASE WHEN purchase_number=2 THEN order_date END) AS second_purchase_date
     FROM purchases GROUP BY customer_id
 )
 SELECT COUNT(*) AS customers_with_purchase,
-       COUNT(*) FILTER(WHERE second_purchase_date IS NOT NULL) AS repeat_customers,
-       ROUND(100.0*COUNT(*) FILTER(WHERE second_purchase_date IS NOT NULL)
+       COUNT(CASE WHEN second_purchase_date IS NOT NULL THEN 1 END) AS repeat_customers,
+       ROUND(100.0*COUNT(CASE WHEN second_purchase_date IS NOT NULL THEN 1 END)
              /NULLIF(COUNT(*),0),2) AS repeat_purchase_rate_pct,
-       ROUND(AVG(second_purchase_date-first_purchase_date)
-             FILTER(WHERE second_purchase_date IS NOT NULL),1) AS avg_days_to_second_purchase
+       ROUND(AVG(CASE WHEN second_purchase_date IS NOT NULL THEN DATEDIFF(second_purchase_date, first_purchase_date) END),1) AS avg_days_to_second_purchase
 FROM first_second;

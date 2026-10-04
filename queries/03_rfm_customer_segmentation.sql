@@ -9,8 +9,8 @@ WITH customer_rfm AS (
     GROUP BY c.customer_id,c.customer_segment
 ),
 scored AS (
-    SELECT *, CURRENT_DATE-last_order_date AS recency_days,
-           NTILE(4) OVER (ORDER BY CURRENT_DATE-last_order_date DESC) AS recency_quartile,
+    SELECT *, DATEDIFF(CURRENT_DATE, last_order_date) AS recency_days,
+           NTILE(4) OVER (ORDER BY DATEDIFF(CURRENT_DATE, last_order_date) DESC) AS recency_quartile,
            NTILE(4) OVER (ORDER BY frequency) AS frequency_quartile,
            NTILE(4) OVER (ORDER BY monetary) AS monetary_quartile
     FROM customer_rfm

@@ -10,6 +10,6 @@ SELECT c.customer_segment,COUNT(DISTINCT ov.customer_id) AS customers,COUNT(*) A
        ROUND(SUM(ov.net_order_value),2) AS revenue,
        ROUND(AVG(ov.net_order_value),2) AS avg_order_value,
        ROUND(SUM(ov.net_order_value)/NULLIF(COUNT(DISTINCT ov.customer_id),0),2) AS revenue_per_customer,
-       ROUND(COUNT(*)::numeric/NULLIF(COUNT(DISTINCT ov.customer_id),0),2) AS orders_per_customer
+       ROUND(1.0*COUNT(*)/NULLIF(COUNT(DISTINCT ov.customer_id),0),2) AS orders_per_customer
 FROM order_value ov JOIN customers c ON c.customer_id=ov.customer_id
 GROUP BY c.customer_segment ORDER BY revenue DESC;

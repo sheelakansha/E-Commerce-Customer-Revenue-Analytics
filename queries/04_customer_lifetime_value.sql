@@ -13,6 +13,6 @@ SELECT customer_segment,COUNT(*) AS customers,
        ROUND(AVG(lifetime_value),2) AS avg_lifetime_value,
        ROUND(AVG(order_count),2) AS avg_orders,
        ROUND(AVG(lifetime_value/NULLIF(order_count,0)),2) AS avg_order_value,
-       ROUND(AVG(last_order_date-first_order_date),1) AS avg_active_days,
+       ROUND(AVG(DATEDIFF(last_order_date, first_order_date)),1) AS avg_active_days,
        ROUND(SUM(lifetime_value),2) AS segment_revenue
 FROM customer_value GROUP BY customer_segment ORDER BY segment_revenue DESC;

@@ -1,5 +1,4 @@
 import os
-import psycopg2
 import pandas as pd
 import numpy as np
 import matplotlib.pyplot as plt
@@ -9,16 +8,22 @@ import json
 # Setup output directory
 os.makedirs('results', exist_ok=True)
 
-# DB connection configuration
+# DB connection configuration for MySQL
 DB_CONFIG = {
-    'dbname': 'ecommerce_analytics',
-    'user': 'postgres',
-    'host': 'localhost',
-    'port': '1234'
+    'host': os.environ.get('MYSQL_HOST', 'localhost'),
+    'user': os.environ.get('MYSQL_USER', 'root'),
+    'password': os.environ.get('MYSQL_PASSWORD', ''),
+    'database': os.environ.get('MYSQL_DATABASE', 'ecommerce_analytics'),
+    'port': int(os.environ.get('MYSQL_PORT', 3306))
 }
 
 def get_connection():
-    return psycopg2.connect(**DB_CONFIG)
+    try:
+        import pymysql
+        return pymysql.connect(**DB_CONFIG)
+    except Exception:
+        import mysql.connector
+        return mysql.connector.connect(**DB_CONFIG)
 
 conn = get_connection()
 
@@ -36,7 +41,7 @@ query_files = [
 
 dataframes = {}
 
-print("--- Running Queries and Saving CSVs ---")
+print("--- Running MySQL Queries and Saving CSVs ---")
 for qfile in query_files:
     filepath = os.path.join('queries', qfile)
     with open(filepath, 'r', encoding='utf-8') as f:
@@ -85,15 +90,15 @@ WITH purchases AS (
 ),
 first_second AS (
     SELECT customer_id,
-           MIN(order_date) FILTER(WHERE purchase_number=1) AS first_date,
-           MIN(order_date) FILTER(WHERE purchase_number=2) AS second_date
+           MIN(CASE WHEN purchase_number=1 THEN order_date END) AS first_date,
+           MIN(CASE WHEN purchase_number=2 THEN order_date END) AS second_date
     FROM purchases GROUP BY customer_id
 )
-SELECT PERCENTILE_CONT(0.5) WITHIN GROUP (ORDER BY (second_date - first_date)) as median_days
+SELECT DATEDIFF(second_date, first_date) as days_diff
 FROM first_second WHERE second_date IS NOT NULL;
 """
 df_median = pd.read_sql_query(median_days_sql, conn)
-median_days = df_median['median_days'].values[0]
+median_days = float(df_median['days_diff'].median())
 
 # 3. RFM Tier Revenue Share & At-Risk Revenue
 df_rfm = dataframes['03_rfm_customer_segmentation.sql']
@@ -206,7 +211,7 @@ notebook_content = {
    "metadata": {},
    "source": [
     "# E-Commerce Customer Revenue Analytics — Visualizations & Insights\n",
-    "This notebook loads the analytical results from PostgreSQL and generates visual charts for revenue trends, cohort retention, and RFM customer segmentation."
+    "This notebook loads the analytical results from MySQL and generates visual charts for revenue trends, cohort retention, and RFM customer segmentation."
    ]
   },
   {

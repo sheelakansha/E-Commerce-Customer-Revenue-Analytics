@@ -1,5 +1,32 @@
-\copy customers FROM 'data/customers.csv' CSV HEADER;
-\copy products FROM 'data/products.csv' CSV HEADER;
-\copy orders FROM 'data/orders.csv' CSV HEADER;
-\copy order_items FROM 'data/order_items.csv' CSV HEADER;
-\copy payments FROM 'data/payments.csv' CSV HEADER;
+-- MySQL CSV Data Loading Script
+SET GLOBAL local_infile = 1;
+
+LOAD DATA LOCAL INFILE 'data/customers.csv'
+INTO TABLE customers
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'data/products.csv'
+INTO TABLE products
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'data/orders.csv'
+INTO TABLE orders
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'data/order_items.csv'
+INTO TABLE order_items
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
+
+LOAD DATA LOCAL INFILE 'data/payments.csv'
+INTO TABLE payments
+FIELDS TERMINATED BY ',' ENCLOSED BY '"'
+LINES TERMINATED BY '\n'
+IGNORE 1 ROWS;
